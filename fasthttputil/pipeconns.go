@@ -144,6 +144,12 @@ func (c *pipeConn) read(p []byte, mayBlock bool) (int, error) {
 	}
 	n := copy(p, c.bb)
 	c.bb = c.bb[n:]
+	
+	if len(c.bb) == 0{
+		releaseByteBuffer(c.b)
+		c.b = nil
+		c.bb = nil
+	}
 
 	return n, nil
 }
